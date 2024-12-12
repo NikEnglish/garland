@@ -1,1 +1,60 @@
+import tkinter as tk
+import requests
+import json
 
+# Параметры
+GITHUB_REPO = "вашеимя/virtual-tree"  # Укажите ваш репозиторий
+JSON_PATH = "tree_program.json"
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1200
+
+# Функция для загрузки программы
+def fetch_program():
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{JSON_PATH}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        content = json.loads(response.content.decode())
+        return json.loads(content['content'].encode('ascii'))
+    return None
+
+# Функция для отображения ёлки
+def display_tree(program):
+    # Создание окна
+    root = tk.Tk()
+    root.title("Ёлка")
+    root.geometry(f"{SCREEN_HEIGHT}x{SCREEN_WIDTH}")
+    root.configure(bg="black")
+
+    # Создание холста
+    canvas = tk.Canvas(root, width=SCREEN_HEIGHT, height=SCREEN_WIDTH, bg="black")
+    canvas.pack()
+
+    # Рисование треугольной ёлки
+    canvas.create_polygon(
+        SCREEN_HEIGHT // 2, 0,  # Верхушка ёлки
+        0, SCREEN_WIDTH,       # Левый угол
+        SCREEN_HEIGHT, SCREEN_WIDTH,  # Правый угол
+        fill="green",
+        outline="white"
+    )
+
+    # Отрисовка светодиодов
+    for led in program["leds"]:
+        x, y = led["x"], led["y"]
+        color = f"#{led['color'][0]:02x}{led['color'][1]:02x}{led['color'][2]:02x}"
+        canvas.create_oval(
+            x - 5, y - 5, x + 5, y + 5,  # Размер светодиода
+            fill=color, outline=""
+        )
+
+    # Запуск интерфейса
+    root.mainloop()
+
+# Запуск программы
+if __name__ == "__main__":
+    program = fetch_program()
+    if program:
+        display_tree(program)
+    else:
+        print("Программа не найдена!")
