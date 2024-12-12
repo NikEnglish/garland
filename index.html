@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Виртуальная ёлка</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Настройка виртуальной ёлки</h1>
+  <div class="controls">
+    <label for="treeWidth">Ширина ёлки:</label>
+    <input type="number" id="treeWidth" value="800">
+    <label for="treeHeight">Высота ёлки:</label>
+    <input type="number" id="treeHeight" value="1200">
+    <button id="applySettings">Применить</button>
+  </div>
 
+  <canvas id="treeCanvas" width="800" height="1200" style="border: 1px solid black;"></canvas>
+
+  <button id="saveProgram">Сохранить программу</button>
+  <button id="loadProgram">Загрузить программу</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
