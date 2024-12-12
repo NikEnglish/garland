@@ -3,20 +3,20 @@ import requests
 import json
 
 # Параметры
-GITHUB_REPO = "вашеимя/virtual-tree"  # Укажите ваш репозиторий
-JSON_PATH = "tree_program.json"
+GITHUB_PAGES_URL = "https://nikenglish.github.io/garland"  # Ваш путь на GitHub Pages
+JSON_PATH = "tree_program.json"  # Путь к файлу в репозитории
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
 
 # Функция для загрузки программы
 def fetch_program():
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{JSON_PATH}"
+    url = f"{GITHUB_PAGES_URL}/{JSON_PATH}"  # Формируем полный URL для получения JSON
     response = requests.get(url)
     if response.status_code == 200:
-        data = response.json()
-        content = json.loads(response.content.decode())
-        return json.loads(content['content'].encode('ascii'))
-    return None
+        return response.json()  # Декодируем JSON-ответ
+    else:
+        print(f"Ошибка загрузки программы: {response.status_code}")
+        return None
 
 # Функция для отображения ёлки
 def display_tree(program):
